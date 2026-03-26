@@ -94,6 +94,7 @@
             btndivide.TabIndex = 4;
             btndivide.Text = "÷";
             btndivide.UseVisualStyleBackColor = true;
+            btndivide.Click += btndivide_Click;
             // 
             // btndel
             // 
@@ -141,6 +142,7 @@
             btnx.TabIndex = 8;
             btnx.Text = "x";
             btnx.UseVisualStyleBackColor = true;
+            btnx.Click += btnx_Click;
             // 
             // btn7
             // 
@@ -180,6 +182,7 @@
             btnminus.TabIndex = 12;
             btnminus.Text = "-";
             btnminus.UseVisualStyleBackColor = true;
+            btnminus.Click += btnminus_Click;
             // 
             // btn4
             // 
