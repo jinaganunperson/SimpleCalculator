@@ -56,7 +56,7 @@
             // txtinput
             // 
             txtinput.Font = new Font("맑은 고딕", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 129);
-            txtinput.Location = new Point(93, 110);
+            txtinput.Location = new Point(48, 110);
             txtinput.Margin = new Padding(4, 3, 4, 3);
             txtinput.Name = "txtinput";
             txtinput.Size = new Size(596, 50);
@@ -65,7 +65,7 @@
             // txtresult
             // 
             txtresult.Font = new Font("맑은 고딕", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 129);
-            txtresult.Location = new Point(93, 177);
+            txtresult.Location = new Point(48, 177);
             txtresult.Margin = new Padding(4, 3, 4, 3);
             txtresult.Name = "txtresult";
             txtresult.Size = new Size(596, 50);
@@ -75,7 +75,7 @@
             // 
             lbl.AutoSize = true;
             lbl.Font = new Font("휴먼편지체", 28.125F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 129);
-            lbl.Location = new Point(93, 20);
+            lbl.Location = new Point(48, 20);
             lbl.Margin = new Padding(4, 0, 4, 0);
             lbl.Name = "lbl";
             lbl.Size = new Size(596, 87);
@@ -85,7 +85,7 @@
             // btnce
             // 
             btnce.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnce.Location = new Point(93, 250);
+            btnce.Location = new Point(48, 250);
             btnce.Margin = new Padding(4, 3, 4, 3);
             btnce.Name = "btnce";
             btnce.Size = new Size(125, 62);
@@ -97,7 +97,7 @@
             // btndivide
             // 
             btndivide.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btndivide.Location = new Point(577, 250);
+            btndivide.Location = new Point(532, 250);
             btndivide.Margin = new Padding(4, 3, 4, 3);
             btndivide.Name = "btndivide";
             btndivide.Size = new Size(125, 62);
@@ -109,7 +109,7 @@
             // btndel
             // 
             btndel.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btndel.Location = new Point(413, 250);
+            btndel.Location = new Point(368, 250);
             btndel.Margin = new Padding(4, 3, 4, 3);
             btndel.Name = "btndel";
             btndel.Size = new Size(125, 62);
@@ -121,7 +121,7 @@
             // btnc
             // 
             btnc.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnc.Location = new Point(255, 250);
+            btnc.Location = new Point(210, 250);
             btnc.Margin = new Padding(4, 3, 4, 3);
             btnc.Name = "btnc";
             btnc.Size = new Size(125, 62);
@@ -133,7 +133,7 @@
             // btn8
             // 
             btn8.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn8.Location = new Point(255, 334);
+            btn8.Location = new Point(210, 334);
             btn8.Margin = new Padding(4, 3, 4, 3);
             btn8.Name = "btn8";
             btn8.Size = new Size(125, 62);
@@ -145,7 +145,7 @@
             // btn9
             // 
             btn9.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn9.Location = new Point(413, 334);
+            btn9.Location = new Point(368, 334);
             btn9.Margin = new Padding(4, 3, 4, 3);
             btn9.Name = "btn9";
             btn9.Size = new Size(125, 62);
@@ -157,7 +157,7 @@
             // btnx
             // 
             btnx.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnx.Location = new Point(577, 334);
+            btnx.Location = new Point(532, 334);
             btnx.Margin = new Padding(4, 3, 4, 3);
             btnx.Name = "btnx";
             btnx.Size = new Size(125, 62);
@@ -169,7 +169,7 @@
             // btn7
             // 
             btn7.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn7.Location = new Point(93, 334);
+            btn7.Location = new Point(48, 334);
             btn7.Margin = new Padding(4, 3, 4, 3);
             btn7.Name = "btn7";
             btn7.Size = new Size(125, 62);
@@ -181,7 +181,7 @@
             // btn5
             // 
             btn5.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn5.Location = new Point(255, 422);
+            btn5.Location = new Point(210, 422);
             btn5.Margin = new Padding(4, 3, 4, 3);
             btn5.Name = "btn5";
             btn5.Size = new Size(125, 62);
@@ -193,7 +193,7 @@
             // btn6
             // 
             btn6.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn6.Location = new Point(413, 422);
+            btn6.Location = new Point(368, 422);
             btn6.Margin = new Padding(4, 3, 4, 3);
             btn6.Name = "btn6";
             btn6.Size = new Size(125, 62);
@@ -205,7 +205,7 @@
             // btnminus
             // 
             btnminus.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnminus.Location = new Point(577, 422);
+            btnminus.Location = new Point(532, 422);
             btnminus.Margin = new Padding(4, 3, 4, 3);
             btnminus.Name = "btnminus";
             btnminus.Size = new Size(125, 62);
@@ -217,7 +217,7 @@
             // btn4
             // 
             btn4.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn4.Location = new Point(93, 422);
+            btn4.Location = new Point(48, 422);
             btn4.Margin = new Padding(4, 3, 4, 3);
             btn4.Name = "btn4";
             btn4.Size = new Size(125, 62);
@@ -229,7 +229,7 @@
             // btn2
             // 
             btn2.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn2.Location = new Point(255, 515);
+            btn2.Location = new Point(210, 515);
             btn2.Margin = new Padding(4, 3, 4, 3);
             btn2.Name = "btn2";
             btn2.Size = new Size(125, 62);
@@ -241,7 +241,7 @@
             // btn3
             // 
             btn3.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn3.Location = new Point(413, 515);
+            btn3.Location = new Point(368, 515);
             btn3.Margin = new Padding(4, 3, 4, 3);
             btn3.Name = "btn3";
             btn3.Size = new Size(125, 62);
@@ -253,7 +253,7 @@
             // btnplus
             // 
             btnplus.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnplus.Location = new Point(577, 515);
+            btnplus.Location = new Point(532, 515);
             btnplus.Margin = new Padding(4, 3, 4, 3);
             btnplus.Name = "btnplus";
             btnplus.Size = new Size(125, 62);
@@ -265,7 +265,7 @@
             // btn1
             // 
             btn1.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn1.Location = new Point(93, 515);
+            btn1.Location = new Point(48, 515);
             btn1.Margin = new Padding(4, 3, 4, 3);
             btn1.Name = "btn1";
             btn1.Size = new Size(125, 62);
@@ -277,7 +277,7 @@
             // btn0
             // 
             btn0.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btn0.Location = new Point(255, 603);
+            btn0.Location = new Point(210, 603);
             btn0.Margin = new Padding(4, 3, 4, 3);
             btn0.Name = "btn0";
             btn0.Size = new Size(125, 62);
@@ -289,7 +289,7 @@
             // btndot
             // 
             btndot.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btndot.Location = new Point(413, 603);
+            btndot.Location = new Point(368, 603);
             btndot.Margin = new Padding(4, 3, 4, 3);
             btndot.Name = "btndot";
             btndot.Size = new Size(125, 62);
@@ -300,7 +300,7 @@
             // btnresult
             // 
             btnresult.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnresult.Location = new Point(577, 603);
+            btnresult.Location = new Point(532, 603);
             btnresult.Margin = new Padding(4, 3, 4, 3);
             btnresult.Name = "btnresult";
             btnresult.Size = new Size(125, 62);
@@ -312,7 +312,7 @@
             // btnplusminus
             // 
             btnplusminus.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
-            btnplusminus.Location = new Point(93, 603);
+            btnplusminus.Location = new Point(48, 603);
             btnplusminus.Margin = new Padding(4, 3, 4, 3);
             btnplusminus.Name = "btnplusminus";
             btnplusminus.Size = new Size(125, 62);
@@ -324,7 +324,7 @@
             // 
             AutoScaleDimensions = new SizeF(20F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(753, 711);
+            ClientSize = new Size(707, 711);
             Controls.Add(btn0);
             Controls.Add(btndot);
             Controls.Add(btnresult);
