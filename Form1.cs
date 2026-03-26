@@ -1,14 +1,13 @@
 using System;
+using System.Data; // DataTable 사용을 위해 추가
 using System.Windows.Forms;
 
 namespace SimpleCalculator
 {
     public partial class Form1 : Form
     {
-        double firstNum = 0;
         double result = 0;
         bool isOpClicked = false;
-        string currentOp = "";
 
         public Form1()
         {
@@ -16,99 +15,73 @@ namespace SimpleCalculator
             this.KeyPreview = true;
         }
 
-        // [1] 마우스 클릭 이벤트
         private void btnNum_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
             SimulateNumericInput(btn.Text);
-            this.ActiveControl = null; // 클릭 후 포커스 제거
+            this.ActiveControl = null;
         }
 
-        // [공통] 숫자 입력 로직
-        private void SimulateNumericInput(string num)
+        private void SimulateNumericInput(string inputVal)
         {
-            if (txtinput.Text == "0") txtinput.Text = num;
-            else txtinput.Text += num;
+            // 수식창 업데이트 (0일 때는 교체, 아니면 누적)
+            if (txtinput.Text == "0") txtinput.Text = inputVal;
+            else txtinput.Text += inputVal;
 
+            // 결과창(현재 입력값) 업데이트
             if (isOpClicked)
             {
-                txtresult.Text = num;
+                txtresult.Text = inputVal;
                 isOpClicked = false;
             }
             else
             {
-                if (txtresult.Text == "0" || txtresult.Text == "") txtresult.Text = num;
-                else txtresult.Text += num;
+                if (txtresult.Text == "0" || txtresult.Text == "") txtresult.Text = inputVal;
+                else txtresult.Text += inputVal;
             }
         }
 
-        // [2] 연산자 버튼
-        private void btnplus_Click(object sender, EventArgs e) { HandleOperator("+", "+"); }
-        private void btnminus_Click(object sender, EventArgs e) { HandleOperator("-", "-"); }
-        private void btnx_Click(object sender, EventArgs e) { HandleOperator("x", "x"); }
-        private void btndivide_Click(object sender, EventArgs e) { HandleOperator("÷", "÷"); }
-
-        private void HandleOperator(string opSymbol, string opName)
+        // 연산자 및 괄호 처리 공통 함수
+        private void HandleOperator(string op)
         {
-            if (txtinput.Text == "0") return;
-            if (txtinput.Text.EndsWith(" ")) return;
+            if (txtinput.Text == "0" && op != "(") return;
 
-            firstNum = double.Parse(txtresult.Text);
-            txtresult.Text = firstNum.ToString();
-            txtinput.Text += " " + opSymbol + " ";
+            // 괄호는 앞뒤 공백을 넣어 구분하기 쉽게 함
+            if (op == "(" || op == ")") txtinput.Text += " " + op + " ";
+            else txtinput.Text += " " + op + " ";
 
             isOpClicked = true;
-            currentOp = opName;
             this.ActiveControl = null;
         }
 
-        // [3] 결과 버튼
+        private void btnplus_Click(object sender, EventArgs e) { HandleOperator("+"); }
+        private void btnminus_Click(object sender, EventArgs e) { HandleOperator("-"); }
+        private void btnx_Click(object sender, EventArgs e) { HandleOperator("*"); } // 내부적으론 * 사용
+        private void btndivide_Click(object sender, EventArgs e) { HandleOperator("/"); } // 내부적으론 / 사용
+
+        // [3] 결과 버튼 (괄호 및 우선순위 계산 로직)
         private void btnresult_Click(object sender, EventArgs e)
         {
-            // 1. 공백을 기준으로 수식 분리
-            string[] parts = txtinput.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // 2. 최소 3개(숫자 연산자 숫자)는 있어야 계산함
-            if (parts.Length < 3) return;
-
             try
             {
-                // 3. 변수 이름 시작은 소문자, 중간 단어는 대문자 (Camel Case 방식)
-                double tempResult = double.Parse(parts[0]);
+                // 표시용 기호(x, ÷)를 계산용 기호(*, /)로 변경
+                string expression = txtinput.Text.Replace("x", "*").Replace("÷", "/");
 
-                // 4. 수식 전체를 순서대로 계산
-                for (int i = 1; i < parts.Length; i += 2)
-                {
-                    string op = parts[i];
-                    double nextNum = double.Parse(parts[i + 1]);
+                // DataTable의 Compute 메서드는 괄호 우선순위를 완벽히 지원함
+                DataTable table = new DataTable();
+                var computeResult = table.Compute(expression, "");
 
-                    if (op == "+") tempResult += nextNum;
-                    else if (op == "-") tempResult -= nextNum;
-                    else if (op == "x" || op == "*") tempResult *= nextNum;
-                    else if (op == "÷" || op == "/")
-                    {
-                        if (nextNum != 0) tempResult /= nextNum;
-                        else { MessageBox.Show("0으로 나눌 수 없습니다!"); return; }
-                    }
-                }
-
-                // 5. 계산 결과를 전역 변수 'result'에 저장 (이름 주의!)
-                result = tempResult;
-
-                // 6. 소수점 버리고 정수로 출력
+                result = Convert.ToDouble(computeResult);
                 int finalResult = (int)result;
 
                 txtinput.Text += " = " + finalResult.ToString();
                 txtresult.Text = finalResult.ToString();
-
                 isOpClicked = true;
             }
-            catch
+            catch (Exception)
             {
-                MessageBox.Show("수식이 올바르지 않습니다.");
+                MessageBox.Show("수식이 올바르지 않습니다. (괄호 짝을 확인하세요)");
             }
-
-            // 키보드 중복 입력 방지
             this.ActiveControl = null;
         }
 
@@ -120,34 +93,21 @@ namespace SimpleCalculator
             else
                 txtresult.Text = "0";
 
-            string input = txtinput.Text;
-            if (!string.IsNullOrEmpty(input) && char.IsDigit(input[input.Length - 1]))
-            {
-                if (input.Length > 1) txtinput.Text = input.Substring(0, input.Length - 1);
-                else txtinput.Text = "0";
-            }
+            if (txtinput.Text.Length > 1)
+                txtinput.Text = txtinput.Text.Substring(0, txtinput.Text.Length - 1);
+            else
+                txtinput.Text = "0";
+
             this.ActiveControl = null;
         }
 
         private void btnc_Click_1(object sender, EventArgs e)
         {
             txtinput.Text = "0"; txtresult.Text = "0";
-            currentOp = ""; isOpClicked = false;
+            isOpClicked = false;
             this.ActiveControl = null;
         }
 
-        private void btnce_Click(object sender, EventArgs e)
-        {
-            txtresult.Text = "0";
-            string currentInput = txtinput.Text.Trim();
-            string[] parts = currentInput.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (parts.Length >= 2) txtinput.Text = parts[0] + " " + parts[1] + " ";
-            else txtinput.Text = "0";
-            this.ActiveControl = null;
-        }
-
-        // 엔터키 시스템 가로채기
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Enter)
@@ -158,86 +118,65 @@ namespace SimpleCalculator
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        // ⭐ [5] 키보드 입력 핵심 수정 (SuppressKeyPress 추가)
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            // 1. 숫자 입력 처리
-            bool isNumber = false;
-            if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
-            {
-                // Shift를 누르고 숫자키를 누르면 기호가 입력되므로 숫자가 아님을 표시
-                if (!e.Shift)
-                {
-                    SimulateNumericInput((e.KeyCode - Keys.D0).ToString());
-                    isNumber = true;
-                }
-            }
+            bool isHandled = true;
+
+            // 숫자 입력 (Shift 안 눌렀을 때만)
+            if (!e.Shift && e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
+                SimulateNumericInput((e.KeyCode - Keys.D0).ToString());
             else if (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9)
-            {
                 SimulateNumericInput((e.KeyCode - Keys.NumPad0).ToString());
-                isNumber = true;
-            }
+            else
+                isHandled = false;
 
-            if (isNumber)
-            {
-                e.SuppressKeyPress = true; // 윈도우 기본 동작 차단
-                this.ActiveControl = null;
-                return;
-            }
+            if (isHandled) { e.SuppressKeyPress = true; this.ActiveControl = null; return; }
 
-            // 2. 연산자 및 기능키 처리 (자판 상단 및 키패드 공통)
+            // 기호 및 기능키 처리
             switch (e.KeyCode)
             {
-                // --- 곱하기 처리 ---
-                case Keys.Multiply: // 키패드 *
-                    btnx_Click(null, null);
-                    e.SuppressKeyPress = true;
+                case Keys.D9: // ( 괄호 열기 (Shift + 9)
+                    if (e.Shift) HandleOperator("(");
                     break;
-                case Keys.D8: // Shift + 8 = *
-                    if (e.Shift) { btnx_Click(null, null); e.SuppressKeyPress = true; }
+                case Keys.D0: // ) 괄호 닫기 (Shift + 0)
+                    if (e.Shift) HandleOperator(")");
                     break;
-
-                // --- 나누기 처리 ---
-                case Keys.Divide: // 키패드 /
-                case Keys.OemQuestion: // 자판 / (슬래시)
-                    btndivide_Click(null, null);
-                    e.SuppressKeyPress = true;
+                case Keys.Add:
+                case Keys.Oemplus:
+                    if (e.Shift) HandleOperator("+"); else btnresult_Click(null, null);
                     break;
-
-                // --- 더하기 처리 ---
-                case Keys.Add: // 키패드 +
-                    btnplus_Click(null, null);
-                    e.SuppressKeyPress = true;
-                    break;
-                case Keys.Oemplus: // 상단 = (Shift 누르면 +)
-                    if (e.Shift) btnplus_Click(null, null);
-                    else btnresult_Click(null, null);
-                    e.SuppressKeyPress = true;
-                    break;
-
-                // --- 빼기 처리 ---
-                case Keys.Subtract: // 키패드 -
-                case Keys.OemMinus: // 상단 -
-                    btnminus_Click(null, null);
-                    e.SuppressKeyPress = true;
-                    break;
-
-                // --- 기타 기능 ---
-                case Keys.Back:
-                    btndel_Click(null, null);
-                    e.SuppressKeyPress = true;
-                    break;
-                case Keys.Escape:
-                    btnc_Click_1(null, null);
-                    e.SuppressKeyPress = true;
-                    break;
+                case Keys.Subtract: case Keys.OemMinus: HandleOperator("-"); break;
+                case Keys.Multiply: HandleOperator("x"); break;
+                case Keys.D8: if (e.Shift) HandleOperator("x"); break;
+                case Keys.Divide: case Keys.OemQuestion: HandleOperator("÷"); break;
+                case Keys.Back: btndel_Click(null, null); break;
+                case Keys.Escape: btnc_Click_1(null, null); break;
             }
-
             this.ActiveControl = null;
+        }
+        // [CE 버튼] 현재 입력된 숫자만 0으로 초기화
+        private void btnce_Click(object sender, EventArgs e)
+        {
+            txtresult.Text = "0";
 
+            // txtinput에서 마지막 숫자/기호 구역 하나를 제거
+            string currentInput = txtinput.Text.Trim();
+            int lastSpaceIndex = currentInput.LastIndexOf(' ');
+
+            if (lastSpaceIndex != -1)
+            {
+                txtinput.Text = currentInput.Substring(0, lastSpaceIndex) + " ";
+            }
+            else
+            {
+                txtinput.Text = "0";
+            }
             this.ActiveControl = null;
         }
 
-        private void Form1_Load(object sender, EventArgs e) { }
+        // [Form Load] 폼이 처음 켜질 때 실행되는 부분 (비어 있어도 이름은 있어야 함)
+        private void Form1_Load(object sender, EventArgs e)
+        {
+        }
     }
 }
