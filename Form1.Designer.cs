@@ -121,6 +121,7 @@
             btn8.TabIndex = 10;
             btn8.Text = "8";
             btn8.UseVisualStyleBackColor = true;
+            btn8.Click += btnNum_Click;
             // 
             // btn9
             // 
@@ -130,6 +131,7 @@
             btn9.TabIndex = 9;
             btn9.Text = "9";
             btn9.UseVisualStyleBackColor = true;
+            btn9.Click += btnNum_Click;
             // 
             // btnx
             // 
@@ -148,6 +150,7 @@
             btn7.TabIndex = 7;
             btn7.Text = "7";
             btn7.UseVisualStyleBackColor = true;
+            btn7.Click += btnNum_Click;
             // 
             // btn5
             // 
@@ -157,6 +160,7 @@
             btn5.TabIndex = 14;
             btn5.Text = "5";
             btn5.UseVisualStyleBackColor = true;
+            btn5.Click += btnNum_Click;
             // 
             // btn6
             // 
@@ -166,6 +170,7 @@
             btn6.TabIndex = 13;
             btn6.Text = "6";
             btn6.UseVisualStyleBackColor = true;
+            btn6.Click += btnNum_Click;
             // 
             // btnminus
             // 
@@ -184,6 +189,7 @@
             btn4.TabIndex = 11;
             btn4.Text = "4";
             btn4.UseVisualStyleBackColor = true;
+            btn4.Click += btnNum_Click;
             // 
             // btn2
             // 
@@ -193,6 +199,7 @@
             btn2.TabIndex = 18;
             btn2.Text = "2";
             btn2.UseVisualStyleBackColor = true;
+            btn2.Click += btnNum_Click;
             // 
             // btn3
             // 
@@ -202,6 +209,7 @@
             btn3.TabIndex = 17;
             btn3.Text = "3";
             btn3.UseVisualStyleBackColor = true;
+            btn3.Click += btnNum_Click;
             // 
             // btnplus
             // 
@@ -211,6 +219,7 @@
             btnplus.TabIndex = 16;
             btnplus.Text = "+";
             btnplus.UseVisualStyleBackColor = true;
+            btnplus.Click += btnplus_Click;
             // 
             // btn1
             // 
@@ -220,6 +229,7 @@
             btn1.TabIndex = 15;
             btn1.Text = "1";
             btn1.UseVisualStyleBackColor = true;
+            btn1.Click += btnNum_Click;
             // 
             // btn0
             // 
@@ -229,6 +239,7 @@
             btn0.TabIndex = 22;
             btn0.Text = "0";
             btn0.UseVisualStyleBackColor = true;
+            btn0.Click += btnNum_Click;
             // 
             // btndot
             // 
@@ -247,6 +258,7 @@
             btnresult.TabIndex = 20;
             btnresult.Text = "=";
             btnresult.UseVisualStyleBackColor = true;
+            btnresult.Click += btnresult_Click;
             // 
             // btnplusminus
             // 
