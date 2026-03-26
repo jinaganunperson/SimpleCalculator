@@ -85,6 +85,7 @@
             btnce.TabIndex = 3;
             btnce.Text = "CE";
             btnce.UseVisualStyleBackColor = true;
+            btnce.Click += btnce_Click;
             // 
             // btndivide
             // 
@@ -104,6 +105,7 @@
             btndel.TabIndex = 5;
             btndel.Text = "del";
             btndel.UseVisualStyleBackColor = true;
+            btndel.Click += btndel_Click;
             // 
             // btnc
             // 
@@ -113,6 +115,7 @@
             btnc.TabIndex = 6;
             btnc.Text = "C";
             btnc.UseVisualStyleBackColor = true;
+            btnc.Click += btnc_Click_1;
             // 
             // btn8
             // 
