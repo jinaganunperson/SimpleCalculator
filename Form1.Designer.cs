@@ -136,6 +136,7 @@
             // 
             // btn8
             // 
+            btn8.BackColor = SystemColors.Info;
             btn8.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn8.Location = new Point(210, 334);
             btn8.Margin = new Padding(4, 3, 4, 3);
@@ -143,11 +144,12 @@
             btn8.Size = new Size(125, 62);
             btn8.TabIndex = 10;
             btn8.Text = "8";
-            btn8.UseVisualStyleBackColor = true;
+            btn8.UseVisualStyleBackColor = false;
             btn8.Click += btnNum_Click;
             // 
             // btn9
             // 
+            btn9.BackColor = SystemColors.Info;
             btn9.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn9.Location = new Point(368, 334);
             btn9.Margin = new Padding(4, 3, 4, 3);
@@ -155,7 +157,7 @@
             btn9.Size = new Size(125, 62);
             btn9.TabIndex = 9;
             btn9.Text = "9";
-            btn9.UseVisualStyleBackColor = true;
+            btn9.UseVisualStyleBackColor = false;
             btn9.Click += btnNum_Click;
             // 
             // btnx
@@ -173,6 +175,7 @@
             // 
             // btn7
             // 
+            btn7.BackColor = SystemColors.Info;
             btn7.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn7.Location = new Point(48, 334);
             btn7.Margin = new Padding(4, 3, 4, 3);
@@ -180,11 +183,12 @@
             btn7.Size = new Size(125, 62);
             btn7.TabIndex = 7;
             btn7.Text = "7";
-            btn7.UseVisualStyleBackColor = true;
+            btn7.UseVisualStyleBackColor = false;
             btn7.Click += btnNum_Click;
             // 
             // btn5
             // 
+            btn5.BackColor = SystemColors.Info;
             btn5.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn5.Location = new Point(210, 422);
             btn5.Margin = new Padding(4, 3, 4, 3);
@@ -192,11 +196,12 @@
             btn5.Size = new Size(125, 62);
             btn5.TabIndex = 14;
             btn5.Text = "5";
-            btn5.UseVisualStyleBackColor = true;
+            btn5.UseVisualStyleBackColor = false;
             btn5.Click += btnNum_Click;
             // 
             // btn6
             // 
+            btn6.BackColor = SystemColors.Info;
             btn6.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn6.Location = new Point(368, 422);
             btn6.Margin = new Padding(4, 3, 4, 3);
@@ -204,7 +209,7 @@
             btn6.Size = new Size(125, 62);
             btn6.TabIndex = 13;
             btn6.Text = "6";
-            btn6.UseVisualStyleBackColor = true;
+            btn6.UseVisualStyleBackColor = false;
             btn6.Click += btnNum_Click;
             // 
             // btnminus
@@ -222,6 +227,7 @@
             // 
             // btn4
             // 
+            btn4.BackColor = SystemColors.Info;
             btn4.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn4.Location = new Point(48, 422);
             btn4.Margin = new Padding(4, 3, 4, 3);
@@ -229,11 +235,12 @@
             btn4.Size = new Size(125, 62);
             btn4.TabIndex = 11;
             btn4.Text = "4";
-            btn4.UseVisualStyleBackColor = true;
+            btn4.UseVisualStyleBackColor = false;
             btn4.Click += btnNum_Click;
             // 
             // btn2
             // 
+            btn2.BackColor = SystemColors.Info;
             btn2.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn2.Location = new Point(210, 515);
             btn2.Margin = new Padding(4, 3, 4, 3);
@@ -241,11 +248,12 @@
             btn2.Size = new Size(125, 62);
             btn2.TabIndex = 18;
             btn2.Text = "2";
-            btn2.UseVisualStyleBackColor = true;
+            btn2.UseVisualStyleBackColor = false;
             btn2.Click += btnNum_Click;
             // 
             // btn3
             // 
+            btn3.BackColor = SystemColors.Info;
             btn3.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn3.Location = new Point(368, 515);
             btn3.Margin = new Padding(4, 3, 4, 3);
@@ -253,7 +261,7 @@
             btn3.Size = new Size(125, 62);
             btn3.TabIndex = 17;
             btn3.Text = "3";
-            btn3.UseVisualStyleBackColor = true;
+            btn3.UseVisualStyleBackColor = false;
             btn3.Click += btnNum_Click;
             // 
             // btnplus
@@ -271,6 +279,7 @@
             // 
             // btn1
             // 
+            btn1.BackColor = SystemColors.Info;
             btn1.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn1.Location = new Point(48, 515);
             btn1.Margin = new Padding(4, 3, 4, 3);
@@ -278,11 +287,12 @@
             btn1.Size = new Size(125, 62);
             btn1.TabIndex = 15;
             btn1.Text = "1";
-            btn1.UseVisualStyleBackColor = true;
+            btn1.UseVisualStyleBackColor = false;
             btn1.Click += btnNum_Click;
             // 
             // btn0
             // 
+            btn0.BackColor = SystemColors.Info;
             btn0.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btn0.Location = new Point(210, 603);
             btn0.Margin = new Padding(4, 3, 4, 3);
@@ -290,7 +300,7 @@
             btn0.Size = new Size(125, 62);
             btn0.TabIndex = 22;
             btn0.Text = "0";
-            btn0.UseVisualStyleBackColor = true;
+            btn0.UseVisualStyleBackColor = false;
             btn0.Click += btnNum_Click;
             // 
             // btndot
