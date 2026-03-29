@@ -84,6 +84,7 @@
             // 
             // btnce
             // 
+            btnce.BackColor = SystemColors.GradientActiveCaption;
             btnce.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btnce.Location = new Point(48, 250);
             btnce.Margin = new Padding(4, 3, 4, 3);
@@ -91,11 +92,12 @@
             btnce.Size = new Size(125, 62);
             btnce.TabIndex = 3;
             btnce.Text = "CE";
-            btnce.UseVisualStyleBackColor = true;
+            btnce.UseVisualStyleBackColor = false;
             btnce.Click += btnce_Click;
             // 
             // btndivide
             // 
+            btndivide.BackColor = SystemColors.GradientActiveCaption;
             btndivide.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btndivide.Location = new Point(532, 250);
             btndivide.Margin = new Padding(4, 3, 4, 3);
@@ -103,11 +105,12 @@
             btndivide.Size = new Size(125, 62);
             btndivide.TabIndex = 4;
             btndivide.Text = "÷";
-            btndivide.UseVisualStyleBackColor = true;
+            btndivide.UseVisualStyleBackColor = false;
             btndivide.Click += btndivide_Click;
             // 
             // btndel
             // 
+            btndel.BackColor = SystemColors.GradientActiveCaption;
             btndel.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btndel.Location = new Point(368, 250);
             btndel.Margin = new Padding(4, 3, 4, 3);
@@ -115,11 +118,12 @@
             btndel.Size = new Size(125, 62);
             btndel.TabIndex = 5;
             btndel.Text = "del";
-            btndel.UseVisualStyleBackColor = true;
+            btndel.UseVisualStyleBackColor = false;
             btndel.Click += btndel_Click;
             // 
             // btnc
             // 
+            btnc.BackColor = SystemColors.GradientActiveCaption;
             btnc.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btnc.Location = new Point(210, 250);
             btnc.Margin = new Padding(4, 3, 4, 3);
@@ -127,7 +131,7 @@
             btnc.Size = new Size(125, 62);
             btnc.TabIndex = 6;
             btnc.Text = "C";
-            btnc.UseVisualStyleBackColor = true;
+            btnc.UseVisualStyleBackColor = false;
             btnc.Click += btnc_Click_1;
             // 
             // btn8
@@ -156,6 +160,7 @@
             // 
             // btnx
             // 
+            btnx.BackColor = SystemColors.GradientActiveCaption;
             btnx.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btnx.Location = new Point(532, 334);
             btnx.Margin = new Padding(4, 3, 4, 3);
@@ -163,7 +168,7 @@
             btnx.Size = new Size(125, 62);
             btnx.TabIndex = 8;
             btnx.Text = "x";
-            btnx.UseVisualStyleBackColor = true;
+            btnx.UseVisualStyleBackColor = false;
             btnx.Click += btnx_Click;
             // 
             // btn7
@@ -204,6 +209,7 @@
             // 
             // btnminus
             // 
+            btnminus.BackColor = SystemColors.GradientActiveCaption;
             btnminus.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btnminus.Location = new Point(532, 422);
             btnminus.Margin = new Padding(4, 3, 4, 3);
@@ -211,7 +217,7 @@
             btnminus.Size = new Size(125, 62);
             btnminus.TabIndex = 12;
             btnminus.Text = "-";
-            btnminus.UseVisualStyleBackColor = true;
+            btnminus.UseVisualStyleBackColor = false;
             btnminus.Click += btnminus_Click;
             // 
             // btn4
@@ -252,6 +258,7 @@
             // 
             // btnplus
             // 
+            btnplus.BackColor = SystemColors.GradientActiveCaption;
             btnplus.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btnplus.Location = new Point(532, 515);
             btnplus.Margin = new Padding(4, 3, 4, 3);
@@ -259,7 +266,7 @@
             btnplus.Size = new Size(125, 62);
             btnplus.TabIndex = 16;
             btnplus.Text = "+";
-            btnplus.UseVisualStyleBackColor = true;
+            btnplus.UseVisualStyleBackColor = false;
             btnplus.Click += btnplus_Click;
             // 
             // btn1
@@ -288,6 +295,7 @@
             // 
             // btndot
             // 
+            btndot.BackColor = SystemColors.GradientActiveCaption;
             btndot.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btndot.Location = new Point(368, 603);
             btndot.Margin = new Padding(4, 3, 4, 3);
@@ -295,10 +303,11 @@
             btndot.Size = new Size(125, 62);
             btndot.TabIndex = 21;
             btndot.Text = ".";
-            btndot.UseVisualStyleBackColor = true;
+            btndot.UseVisualStyleBackColor = false;
             // 
             // btnresult
             // 
+            btnresult.BackColor = SystemColors.GradientActiveCaption;
             btnresult.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btnresult.Location = new Point(532, 603);
             btnresult.Margin = new Padding(4, 3, 4, 3);
@@ -306,11 +315,12 @@
             btnresult.Size = new Size(125, 62);
             btnresult.TabIndex = 20;
             btnresult.Text = "=";
-            btnresult.UseVisualStyleBackColor = true;
+            btnresult.UseVisualStyleBackColor = false;
             btnresult.Click += btnresult_Click;
             // 
             // btnplusminus
             // 
+            btnplusminus.BackColor = SystemColors.GradientActiveCaption;
             btnplusminus.Font = new Font("굴림", 12F, FontStyle.Bold | FontStyle.Italic);
             btnplusminus.Location = new Point(48, 603);
             btnplusminus.Margin = new Padding(4, 3, 4, 3);
@@ -318,7 +328,7 @@
             btnplusminus.Size = new Size(125, 62);
             btnplusminus.TabIndex = 19;
             btnplusminus.Text = "+/-";
-            btnplusminus.UseVisualStyleBackColor = true;
+            btnplusminus.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
