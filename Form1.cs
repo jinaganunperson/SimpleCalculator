@@ -85,18 +85,42 @@ namespace SimpleCalculator
             this.ActiveControl = null;
         }
 
-        // [4] 삭제 및 초기화
+        // [6] 한 글자씩 지우기 버튼 (btndel)
         private void btndel_Click(object sender, EventArgs e)
         {
+            // 1. txtresult (결과창) 지우기
             if (txtresult.Text.Length > 1)
+            {
                 txtresult.Text = txtresult.Text.Substring(0, txtresult.Text.Length - 1);
+            }
             else
+            {
                 txtresult.Text = "0";
+            }
 
-            if (txtinput.Text.Length > 1)
-                txtinput.Text = txtinput.Text.Substring(0, txtinput.Text.Length - 1);
-            else
-                txtinput.Text = "0";
+            // 2. txtinput (수식창) 지우기
+            string input = txtinput.Text;
+
+            if (!string.IsNullOrEmpty(input) && input != "0")
+            {
+                // 마지막이 공백이면 연산자 구역이므로 " + " 전체(3글자)를 지움
+                if (input.EndsWith(" "))
+                {
+                    // 연산자는 앞뒤 공백 포함 3글자 (예: " + ")
+                    if (input.Length > 3)
+                        txtinput.Text = input.Substring(0, input.Length - 3);
+                    else
+                        txtinput.Text = "0";
+                }
+                else
+                {
+                    // 마지막이 숫자면 1글자만 지움
+                    if (input.Length > 1)
+                        txtinput.Text = input.Substring(0, input.Length - 1);
+                    else
+                        txtinput.Text = "0";
+                }
+            }
 
             this.ActiveControl = null;
         }
@@ -122,36 +146,78 @@ namespace SimpleCalculator
         {
             bool isHandled = true;
 
-            // 숫자 입력 (Shift 안 눌렀을 때만)
+            // 1. 숫자 입력 처리 (Shift가 눌리지 않은 상태의 상단 숫자키 또는 키패드 숫자키)
             if (!e.Shift && e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
+            {
                 SimulateNumericInput((e.KeyCode - Keys.D0).ToString());
+            }
             else if (e.KeyCode >= Keys.NumPad0 && e.KeyCode <= Keys.NumPad9)
+            {
                 SimulateNumericInput((e.KeyCode - Keys.NumPad0).ToString());
+            }
             else
+            {
                 isHandled = false;
+            }
 
-            if (isHandled) { e.SuppressKeyPress = true; this.ActiveControl = null; return; }
+            // 숫자가 입력되었다면 여기서 처리 종료
+            if (isHandled)
+            {
+                e.SuppressKeyPress = true;
+                this.ActiveControl = null;
+                return;
+            }
 
-            // 기호 및 기능키 처리
+            // 2. 기호 및 기능키 처리
             switch (e.KeyCode)
             {
                 case Keys.D9: // ( 괄호 열기 (Shift + 9)
                     if (e.Shift) HandleOperator("(");
                     break;
+
                 case Keys.D0: // ) 괄호 닫기 (Shift + 0)
                     if (e.Shift) HandleOperator(")");
                     break;
-                case Keys.Add:
-                case Keys.Oemplus:
-                    if (e.Shift) HandleOperator("+"); else btnresult_Click(null, null);
+
+                case Keys.Add: // 키패드 +
+                    HandleOperator("+");
                     break;
-                case Keys.Subtract: case Keys.OemMinus: HandleOperator("-"); break;
-                case Keys.Multiply: HandleOperator("x"); break;
-                case Keys.D8: if (e.Shift) HandleOperator("x"); break;
-                case Keys.Divide: case Keys.OemQuestion: HandleOperator("÷"); break;
-                case Keys.Back: btndel_Click(null, null); break;
-                case Keys.Escape: btnc_Click_1(null, null); break;
+
+                case Keys.Oemplus: // 상단 =/+ 키
+                    if (e.Shift) HandleOperator("+"); // Shift 누르면 +
+                    else btnresult_Click(null, null);    // 그냥 누르면 =
+                    break;
+
+                case Keys.Subtract: // 키패드 -
+                case Keys.OemMinus: // 상단 -
+                    HandleOperator("-");
+                    break;
+
+                case Keys.Multiply: // 키패드 *
+                    HandleOperator("x");
+                    break;
+
+                case Keys.D8: // 상단 8 (Shift 누르면 *)
+                    if (e.Shift) HandleOperator("x");
+                    break;
+
+                case Keys.Divide: // 키패드 /
+                case Keys.OemQuestion: // 자판 / (슬래시)
+                    HandleOperator("÷");
+                    break;
+
+                case Keys.Back: // ⭐ 백스페이스 (지우기)
+                    btndel_Click(null, null);
+                    e.SuppressKeyPress = true; // 윈도우 기본 백스페이스 동작(소리 등) 방지
+                    break;
+
+                case Keys.Escape: // ESC (전체 초기화)
+                    btnc_Click_1(null, null);
+                    e.SuppressKeyPress = true;
+                    break;
             }
+
+            // 입력 후 버튼에 포커스가 남지 않도록 해제
             this.ActiveControl = null;
         }
         // [CE 버튼] 현재 입력된 숫자만 0으로 초기화
