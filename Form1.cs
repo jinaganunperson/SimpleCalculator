@@ -198,7 +198,7 @@ namespace SimpleCalculator
                     break;
 
                 case Keys.D8: // 상단 8 (Shift 누르면 *)
-                    if (e.Shift) HandleOperator("x");
+                    if (e.Shift) HandleOperator("x"); 
                     break;
 
                 case Keys.Divide: // 키패드 /
