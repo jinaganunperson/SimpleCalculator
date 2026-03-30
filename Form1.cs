@@ -22,10 +22,32 @@ namespace SimpleCalculator
             this.ActiveControl = null;
         }
 
-        // ⭐ 숫자를 포맷팅하는 보조 함수 추가
+        // ⭐ 소수점 버튼 클릭 이벤트 (btndot)
+        private void btndot_Click(object sender, EventArgs e)
+        {
+            // 현재 결과창에 이미 점이 있다면 무시
+            if (txtresult.Text.Contains(".")) return;
+
+            txtresult.Text += ".";
+            txtinput.Text += ".";
+            this.ActiveControl = null;
+        }
+
         private string FormatNumber(string input)
         {
-            // 콤마를 모두 제거하고 숫자로 변환 후 다시 천 단위 콤마 적용
+            if (string.IsNullOrEmpty(input)) return "0";
+
+            // 소수점이 포함된 경우, 정수 부분만 콤마 포맷팅
+            if (input.Contains("."))
+            {
+                string[] parts = input.Split('.');
+                if (double.TryParse(parts[0].Replace(",", ""), out double obj))
+                {
+                    return string.Format("{0:#,0}", obj) + "." + parts[1];
+                }
+                return input;
+            }
+
             if (double.TryParse(input.Replace(",", ""), out double value))
             {
                 return string.Format("{0:#,0}", value);
@@ -35,11 +57,9 @@ namespace SimpleCalculator
 
         private void SimulateNumericInput(string inputVal)
         {
-            // 1. txtinput (수식창) 업데이트
             if (txtinput.Text == "0") txtinput.Text = inputVal;
             else txtinput.Text += inputVal;
 
-            // 2. txtresult (현재 숫자창) 업데이트 및 콤마 적용
             if (isOpClicked)
             {
                 txtresult.Text = inputVal;
@@ -47,11 +67,18 @@ namespace SimpleCalculator
             }
             else
             {
-                string currentText = txtresult.Text.Replace(",", ""); // 기존 콤마 제거
-                if (currentText == "0") currentText = inputVal;
-                else currentText += inputVal;
-
-                txtresult.Text = FormatNumber(currentText); // 콤마 찍어서 표시
+                // 소수점 입력 중일 때는 단순 누적, 아닐 때는 포맷팅 적용
+                if (txtresult.Text.Contains("."))
+                {
+                    txtresult.Text += inputVal;
+                }
+                else
+                {
+                    string currentText = txtresult.Text.Replace(",", "");
+                    if (currentText == "0") currentText = inputVal;
+                    else currentText += inputVal;
+                    txtresult.Text = FormatNumber(currentText);
+                }
             }
         }
 
@@ -68,24 +95,24 @@ namespace SimpleCalculator
         private void btnx_Click(object sender, EventArgs e) { HandleOperator("x"); }
         private void btndivide_Click(object sender, EventArgs e) { HandleOperator("÷"); }
 
-        // [3] 결과 버튼
         private void btnresult_Click(object sender, EventArgs e)
         {
             try
             {
-                // ⭐ 계산 전 수식에서 콤마(,)를 모두 제거해야 오류가 나지 않음
                 string expression = txtinput.Text.Replace(",", "").Replace("x", "*").Replace("÷", "/");
-
                 DataTable table = new DataTable();
                 var computeResult = table.Compute(expression, "");
 
                 result = Convert.ToDouble(computeResult);
 
-                // 결과 표시 (콤마 적용)
-                string formattedResult = string.Format("{0:#,0}", result);
+                // ⭐ (int) 변환을 제거하여 소수점 결과 유지
+                // 결과가 정수면 콤마만, 실수면 소수점까지 표시
+                string formattedResult = result % 1 == 0
+                    ? string.Format("{0:#,0}", result)
+                    : string.Format("{0:#,0.###}", result); // 최대 소수점 3자리까지
+
                 txtinput.Text += " = " + formattedResult;
                 txtresult.Text = formattedResult;
-
                 isOpClicked = true;
             }
             catch
@@ -95,38 +122,25 @@ namespace SimpleCalculator
             this.ActiveControl = null;
         }
 
-        // [6] 한 글자씩 지우기 (콤마 대응)
         private void btndel_Click(object sender, EventArgs e)
         {
-            // txtresult 지우기 (콤마 제거 후 지우고 다시 콤마 적용)
             string currentRes = txtresult.Text.Replace(",", "");
             if (currentRes.Length > 1)
             {
                 currentRes = currentRes.Substring(0, currentRes.Length - 1);
                 txtresult.Text = FormatNumber(currentRes);
             }
-            else
-            {
-                txtresult.Text = "0";
-            }
+            else txtresult.Text = "0";
 
-            // txtinput 지우기
             string input = txtinput.Text;
             if (!string.IsNullOrEmpty(input) && input != "0")
             {
-                if (input.EndsWith(" "))
-                {
-                    txtinput.Text = input.Length > 3 ? input.Substring(0, input.Length - 3) : "0";
-                }
-                else
-                {
-                    txtinput.Text = input.Length > 1 ? input.Substring(0, input.Length - 1) : "0";
-                }
+                if (input.EndsWith(" ")) txtinput.Text = input.Length > 3 ? input.Substring(0, input.Length - 3) : "0";
+                else txtinput.Text = input.Length > 1 ? input.Substring(0, input.Length - 1) : "0";
             }
             this.ActiveControl = null;
         }
 
-        // --- 이하 중략 (btnc, btnce, ProcessCmdKey, KeyDown 등은 기존과 동일) ---
         private void btnc_Click_1(object sender, EventArgs e)
         {
             txtinput.Text = "0"; txtresult.Text = "0";
@@ -153,6 +167,10 @@ namespace SimpleCalculator
 
             switch (e.KeyCode)
             {
+                case Keys.Decimal: // 키패드 마침표
+                case Keys.OemPeriod: // 자판 마침표
+                    btndot_Click(null, null);
+                    break;
                 case Keys.D9: if (e.Shift) HandleOperator("("); break;
                 case Keys.D0: if (e.Shift) HandleOperator(")"); break;
                 case Keys.Add: HandleOperator("+"); break;
