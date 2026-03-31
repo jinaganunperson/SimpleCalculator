@@ -220,30 +220,26 @@ namespace SimpleCalculator
 
         private void btnplusminus_Click(object sender, EventArgs e)
         {
-            // 결과창이 0이면 바꿀 게 없으므로 무시
-            if (txtresult.Text == "0" || string.IsNullOrEmpty(txtresult.Text)) return;
+            // 1. 공백이 포함된 수식 원본을 가져옵니다.
+            string input = txtinput.Text;
 
-            // 1. 현재 txtresult의 값을 가져와서 -1을 곱함
-            double currentVal = double.Parse(txtresult.Text.Replace(",", ""));
-            currentVal *= -1;
+            if (string.IsNullOrEmpty(input) || input == "0") return;
 
-            // 2. 바뀐 값을 다시 포맷팅해서 txtresult에 표시
-            string signedStr = FormatNumber(currentVal.ToString());
-            txtresult.Text = signedStr;
-
-            // 3. txtinput(수식창)의 마지막 숫자 부분도 교체
-            string input = txtinput.Text.Trim();
-            int lastSpace = input.LastIndexOf(' ');
-
-            if (lastSpace != -1)
+            // 2. 연산자 입력 직후(마지막이 공백인 상태)인지 확인
+            if (input.EndsWith(" "))
             {
-                // 연산자 이후의 마지막 숫자 부분을 새 부호가 붙은 숫자로 교체
-                txtinput.Text = input.Substring(0, lastSpace + 1) + signedStr;
-            }
-            else
-            {
-                // 수식에 숫자 하나만 있는 경우 (이미 계산 결과가 나온 상태 등)
-                txtinput.Text = signedStr;
+                // "10 + " 상태라면 끝의 " + "를 찾아서 " - "로 바꿉니다.
+                if (input.EndsWith(" + "))
+                {
+                    // 끝의 3글자(" + ")를 떼어내고 " - "를 붙임
+                    txtinput.Text = input.Substring(0, input.Length - 3) + " - ";
+                }
+                else if (input.EndsWith(" - "))
+                {
+                    // 끝의 3글자(" - ")를 떼어내고 " + "를 붙임
+                    txtinput.Text = input.Substring(0, input.Length - 3) + " + ";
+                }
+                // 곱하기나 나누기라면 아무것도 하지 않음
             }
 
             this.ActiveControl = null;
