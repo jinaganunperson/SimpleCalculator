@@ -84,7 +84,28 @@ namespace SimpleCalculator
 
         private void HandleOperator(string op)
         {
+            // 1. 초기 상태에서 연산자 입력 방지
             if (txtinput.Text == "0" && op != "(") return;
+
+            // 2. ⭐ 핵심: 수식의 마지막이 연산자(공백으로 끝남)라면?
+            if (txtinput.Text.EndsWith(" "))
+            {
+                string currentInput = txtinput.Text.Trim();
+
+                // 마지막 글자가 괄호가 아닐 때만 연산자를 교체
+                if (!currentInput.EndsWith("(") && !currentInput.EndsWith(")"))
+                {
+                    int lastSpaceIndex = currentInput.LastIndexOf(' ');
+                    if (lastSpaceIndex != -1)
+                    {
+                        // 기존 연산자 부분을 지우고 새 연산자로 교체
+                        txtinput.Text = currentInput.Substring(0, lastSpaceIndex) + " " + op + " ";
+                        return; // 교체했으므로 함수 종료
+                    }
+                }
+            }
+
+            // 3. 연산자가 없는 정상적인 상황일 때 추가
             txtinput.Text += " " + op + " ";
             isOpClicked = true;
             this.ActiveControl = null;
@@ -196,5 +217,36 @@ namespace SimpleCalculator
         }
 
         private void Form1_Load(object sender, EventArgs e) { }
+
+        private void btnplusminus_Click(object sender, EventArgs e)
+        {
+            // 결과창이 0이면 바꿀 게 없으므로 무시
+            if (txtresult.Text == "0" || string.IsNullOrEmpty(txtresult.Text)) return;
+
+            // 1. 현재 txtresult의 값을 가져와서 -1을 곱함
+            double currentVal = double.Parse(txtresult.Text.Replace(",", ""));
+            currentVal *= -1;
+
+            // 2. 바뀐 값을 다시 포맷팅해서 txtresult에 표시
+            string signedStr = FormatNumber(currentVal.ToString());
+            txtresult.Text = signedStr;
+
+            // 3. txtinput(수식창)의 마지막 숫자 부분도 교체
+            string input = txtinput.Text.Trim();
+            int lastSpace = input.LastIndexOf(' ');
+
+            if (lastSpace != -1)
+            {
+                // 연산자 이후의 마지막 숫자 부분을 새 부호가 붙은 숫자로 교체
+                txtinput.Text = input.Substring(0, lastSpace + 1) + signedStr;
+            }
+            else
+            {
+                // 수식에 숫자 하나만 있는 경우 (이미 계산 결과가 나온 상태 등)
+                txtinput.Text = signedStr;
+            }
+
+            this.ActiveControl = null;
+        }
     }
 }
