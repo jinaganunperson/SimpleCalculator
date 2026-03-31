@@ -220,26 +220,34 @@ namespace SimpleCalculator
 
         private void btnplusminus_Click(object sender, EventArgs e)
         {
-            // 1. 공백이 포함된 수식 원본을 가져옵니다.
             string input = txtinput.Text;
 
             if (string.IsNullOrEmpty(input) || input == "0") return;
 
-            // 2. 연산자 입력 직후(마지막이 공백인 상태)인지 확인
-            if (input.EndsWith(" "))
+            // 수식을 공백 단위로 분리 (예: "10", "-", "1")
+            string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length < 2) return; // 숫자가 하나만 있거나 하면 무시
+
+            // 뒤에서부터 보면서 가장 마지막에 나온 + 또는 - 를 찾음
+            for (int i = parts.Length - 1; i >= 0; i--)
             {
-                // "10 + " 상태라면 끝의 " + "를 찾아서 " - "로 바꿉니다.
-                if (input.EndsWith(" + "))
+                if (parts[i] == "+" || parts[i] == "-")
                 {
-                    // 끝의 3글자(" + ")를 떼어내고 " - "를 붙임
-                    txtinput.Text = input.Substring(0, input.Length - 3) + " - ";
+                    // 부호 반전
+                    parts[i] = (parts[i] == "+") ? "-" : "+";
+
+                    // 다시 수식으로 합치기
+                    txtinput.Text = string.Join(" ", parts);
+
+                    // 연산자 뒤에 숫자가 없는 상태("10 + ")였다면 뒤에 공백 추가 유지
+                    if (input.EndsWith(" "))
+                    {
+                        txtinput.Text += " ";
+                    }
+
+                    break; // 하나만 바꿨으면 종료
                 }
-                else if (input.EndsWith(" - "))
-                {
-                    // 끝의 3글자(" - ")를 떼어내고 " + "를 붙임
-                    txtinput.Text = input.Substring(0, input.Length - 3) + " + ";
-                }
-                // 곱하기나 나누기라면 아무것도 하지 않음
             }
 
             this.ActiveControl = null;
