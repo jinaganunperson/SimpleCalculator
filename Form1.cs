@@ -15,6 +15,77 @@ namespace SimpleCalculator
             this.KeyPreview = true;
         }
 
+        // [1] 결과 버튼 - 계산 완료 시 기록 추가
+        private void btnresult_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // 이미 결과가 나온 상태면 중복 계산 방지
+                if (txtinput.Text.Contains("=")) return;
+
+                string expression = txtinput.Text.Replace(",", "").Replace("x", "*").Replace("÷", "/");
+                DataTable table = new DataTable();
+                var computeResult = table.Compute(expression, "");
+
+                result = Convert.ToDouble(computeResult);
+
+                string formattedResult = result % 1 == 0
+                    ? string.Format("{0:#,0}", result)
+                    : string.Format("{0:#,0.###}", result);
+
+                // ⭐ 기록 저장용 변수 (수식 = 결과)
+                string fullRecord = txtinput.Text + " = " + formattedResult;
+
+                txtinput.Text = fullRecord;
+                txtresult.Text = formattedResult;
+                isOpClicked = true;
+
+                // ⭐ ListBox(history)에 계산 기록 추가 및 자동 스크롤
+                history.Items.Add(fullRecord);
+                history.SelectedIndex = history.Items.Count - 1;
+            }
+            catch
+            {
+                MessageBox.Show("수식이 올바르지 않습니다.");
+            }
+            this.ActiveControl = null;
+        }
+
+        // ⭐ [NEW] 기록 리스트 더블 클릭 시 결과값 불러오기
+        private void history_DoubleClick(object sender, EventArgs e)
+        {
+            if (history.SelectedItem == null) return;
+
+            // 선택된 줄에서 '=' 이후의 결과값만 추출
+            string selectedLine = history.SelectedItem.ToString();
+            string[] parts = selectedLine.Split('=');
+
+            if (parts.Length > 1)
+            {
+                string lastResult = parts[1].Trim();
+
+                // 현재 입력창 초기화 후 결과값 붙여넣기
+                txtresult.Text = lastResult;
+                txtinput.Text = lastResult;
+                isOpClicked = false;
+            }
+            this.ActiveControl = null;
+        }
+
+        // [2] 초기화 버튼 - 기록도 지우고 싶을 때를 위해 수정
+        private void btnc_Click_1(object sender, EventArgs e)
+        {
+            txtinput.Text = "0";
+            txtresult.Text = "0";
+            isOpClicked = false;
+
+            // 선택 사항: C 버튼을 아주 길게 누르거나 별도 버튼으로 기록 삭제 가능
+            // history.Items.Clear(); // 기록까지 다 지우고 싶다면 이 코드 사용
+            this.ActiveControl = null;
+        }
+
+        // --- 기존 기능 유지 (숫자 입력, 연산자, 부호 반전 등) ---
+
         private void btnNum_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
@@ -22,12 +93,9 @@ namespace SimpleCalculator
             this.ActiveControl = null;
         }
 
-        // ⭐ 소수점 버튼 클릭 이벤트 (btndot)
         private void btndot_Click(object sender, EventArgs e)
         {
-            // 현재 결과창에 이미 점이 있다면 무시
             if (txtresult.Text.Contains(".")) return;
-
             txtresult.Text += ".";
             txtinput.Text += ".";
             this.ActiveControl = null;
@@ -36,28 +104,21 @@ namespace SimpleCalculator
         private string FormatNumber(string input)
         {
             if (string.IsNullOrEmpty(input)) return "0";
-
-            // 소수점이 포함된 경우, 정수 부분만 콤마 포맷팅
             if (input.Contains("."))
             {
                 string[] parts = input.Split('.');
                 if (double.TryParse(parts[0].Replace(",", ""), out double obj))
-                {
                     return string.Format("{0:#,0}", obj) + "." + parts[1];
-                }
                 return input;
             }
-
             if (double.TryParse(input.Replace(",", ""), out double value))
-            {
                 return string.Format("{0:#,0}", value);
-            }
             return input;
         }
 
         private void SimulateNumericInput(string inputVal)
         {
-            if (txtinput.Text == "0") txtinput.Text = inputVal;
+            if (txtinput.Text == "0" || txtinput.Text.Contains("=")) txtinput.Text = inputVal;
             else txtinput.Text += inputVal;
 
             if (isOpClicked)
@@ -67,11 +128,7 @@ namespace SimpleCalculator
             }
             else
             {
-                // 소수점 입력 중일 때는 단순 누적, 아닐 때는 포맷팅 적용
-                if (txtresult.Text.Contains("."))
-                {
-                    txtresult.Text += inputVal;
-                }
+                if (txtresult.Text.Contains(".")) txtresult.Text += inputVal;
                 else
                 {
                     string currentText = txtresult.Text.Replace(",", "");
@@ -84,28 +141,25 @@ namespace SimpleCalculator
 
         private void HandleOperator(string op)
         {
-            // 1. 초기 상태에서 연산자 입력 방지
-            if (txtinput.Text == "0" && op != "(") return;
+            if (txtinput.Text.Contains("=")) // 결과가 나온 상태에서 연산자 누르면 결과값에 이어서 계산
+            {
+                txtinput.Text = txtresult.Text;
+            }
 
-            // 2. ⭐ 핵심: 수식의 마지막이 연산자(공백으로 끝남)라면?
+            if (txtinput.Text == "0" && op != "(") return;
             if (txtinput.Text.EndsWith(" "))
             {
                 string currentInput = txtinput.Text.Trim();
-
-                // 마지막 글자가 괄호가 아닐 때만 연산자를 교체
                 if (!currentInput.EndsWith("(") && !currentInput.EndsWith(")"))
                 {
                     int lastSpaceIndex = currentInput.LastIndexOf(' ');
                     if (lastSpaceIndex != -1)
                     {
-                        // 기존 연산자 부분을 지우고 새 연산자로 교체
                         txtinput.Text = currentInput.Substring(0, lastSpaceIndex) + " " + op + " ";
-                        return; // 교체했으므로 함수 종료
+                        return;
                     }
                 }
             }
-
-            // 3. 연산자가 없는 정상적인 상황일 때 추가
             txtinput.Text += " " + op + " ";
             isOpClicked = true;
             this.ActiveControl = null;
@@ -115,33 +169,6 @@ namespace SimpleCalculator
         private void btnminus_Click(object sender, EventArgs e) { HandleOperator("-"); }
         private void btnx_Click(object sender, EventArgs e) { HandleOperator("x"); }
         private void btndivide_Click(object sender, EventArgs e) { HandleOperator("÷"); }
-
-        private void btnresult_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string expression = txtinput.Text.Replace(",", "").Replace("x", "*").Replace("÷", "/");
-                DataTable table = new DataTable();
-                var computeResult = table.Compute(expression, "");
-
-                result = Convert.ToDouble(computeResult);
-
-                // ⭐ (int) 변환을 제거하여 소수점 결과 유지
-                // 결과가 정수면 콤마만, 실수면 소수점까지 표시
-                string formattedResult = result % 1 == 0
-                    ? string.Format("{0:#,0}", result)
-                    : string.Format("{0:#,0.###}", result); // 최대 소수점 3자리까지
-
-                txtinput.Text += " = " + formattedResult;
-                txtresult.Text = formattedResult;
-                isOpClicked = true;
-            }
-            catch
-            {
-                MessageBox.Show("수식이 올바르지 않습니다.");
-            }
-            this.ActiveControl = null;
-        }
 
         private void btndel_Click(object sender, EventArgs e)
         {
@@ -159,13 +186,6 @@ namespace SimpleCalculator
                 if (input.EndsWith(" ")) txtinput.Text = input.Length > 3 ? input.Substring(0, input.Length - 3) : "0";
                 else txtinput.Text = input.Length > 1 ? input.Substring(0, input.Length - 1) : "0";
             }
-            this.ActiveControl = null;
-        }
-
-        private void btnc_Click_1(object sender, EventArgs e)
-        {
-            txtinput.Text = "0"; txtresult.Text = "0";
-            isOpClicked = false;
             this.ActiveControl = null;
         }
 
@@ -188,10 +208,7 @@ namespace SimpleCalculator
 
             switch (e.KeyCode)
             {
-                case Keys.Decimal: // 키패드 마침표
-                case Keys.OemPeriod: // 자판 마침표
-                    btndot_Click(null, null);
-                    break;
+                case Keys.Decimal: case Keys.OemPeriod: btndot_Click(null, null); break;
                 case Keys.D9: if (e.Shift) HandleOperator("("); break;
                 case Keys.D0: if (e.Shift) HandleOperator(")"); break;
                 case Keys.Add: HandleOperator("+"); break;
@@ -216,41 +233,25 @@ namespace SimpleCalculator
             this.ActiveControl = null;
         }
 
-        private void Form1_Load(object sender, EventArgs e) { }
-
         private void btnplusminus_Click(object sender, EventArgs e)
         {
             string input = txtinput.Text;
-
             if (string.IsNullOrEmpty(input) || input == "0") return;
-
-            // 수식을 공백 단위로 분리 (예: "10", "-", "1")
             string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            if (parts.Length < 2) return; // 숫자가 하나만 있거나 하면 무시
-
-            // 뒤에서부터 보면서 가장 마지막에 나온 + 또는 - 를 찾음
+            if (parts.Length < 2) return;
             for (int i = parts.Length - 1; i >= 0; i--)
             {
                 if (parts[i] == "+" || parts[i] == "-")
                 {
-                    // 부호 반전
                     parts[i] = (parts[i] == "+") ? "-" : "+";
-
-                    // 다시 수식으로 합치기
                     txtinput.Text = string.Join(" ", parts);
-
-                    // 연산자 뒤에 숫자가 없는 상태("10 + ")였다면 뒤에 공백 추가 유지
-                    if (input.EndsWith(" "))
-                    {
-                        txtinput.Text += " ";
-                    }
-
-                    break; // 하나만 바꿨으면 종료
+                    if (input.EndsWith(" ")) txtinput.Text += " ";
+                    break;
                 }
             }
-
             this.ActiveControl = null;
         }
+
+        private void Form1_Load(object sender, EventArgs e) { }
     }
 }
