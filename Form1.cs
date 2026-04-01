@@ -52,25 +52,7 @@ namespace SimpleCalculator
         }
 
         // ⭐ [NEW] 기록 리스트 더블 클릭 시 결과값 불러오기
-        private void history_DoubleClick(object sender, EventArgs e)
-        {
-            if (history.SelectedItem == null) return;
-
-            // 선택된 줄에서 '=' 이후의 결과값만 추출
-            string selectedLine = history.SelectedItem.ToString();
-            string[] parts = selectedLine.Split('=');
-
-            if (parts.Length > 1)
-            {
-                string lastResult = parts[1].Trim();
-
-                // 현재 입력창 초기화 후 결과값 붙여넣기
-                txtresult.Text = lastResult;
-                txtinput.Text = lastResult;
-                isOpClicked = false;
-            }
-            this.ActiveControl = null;
-        }
+        
 
         // [2] 초기화 버튼 - 기록도 지우고 싶을 때를 위해 수정
         private void btnc_Click_1(object sender, EventArgs e)
@@ -263,19 +245,25 @@ namespace SimpleCalculator
         {
             if (history.SelectedItem == null) return;
 
-            // 선택된 줄에서 '=' 이후의 결과값만 추출
+            // 1. 선택된 줄을 가져옴 (예: "8 * 3 - 4 / 2 = 22")
             string selectedLine = history.SelectedItem.ToString();
+
+            // 2. '=' 기호를 기준으로 수식(parts[0])과 결과(parts[1])를 분리
             string[] parts = selectedLine.Split('=');
 
             if (parts.Length > 1)
             {
-                string lastResult = parts[1].Trim();
+                string formula = parts[0].Trim(); // "8 * 3 - 4 / 2"
+                string lastResult = parts[1].Trim(); // "22"
 
-                // 현재 입력창 초기화 후 결과값 붙여넣기
+                // 3. 수식창에는 전체 식을, 결과창에는 결과값을 세팅
+                txtinput.Text = formula;
                 txtresult.Text = lastResult;
-                txtinput.Text = lastResult;
-                isOpClicked = false;
+
+                // 4. 이 상태에서 숫자를 누르면 새로 시작하도록 설정
+                isOpClicked = true;
             }
+
             this.ActiveControl = null;
         }
     }
