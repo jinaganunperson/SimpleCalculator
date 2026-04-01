@@ -51,6 +51,7 @@
             btndot = new Button();
             btnresult = new Button();
             btnplusminus = new Button();
+            history = new ListBox();
             SuspendLayout();
             // 
             // txtinput
@@ -341,12 +342,21 @@
             btnplusminus.UseVisualStyleBackColor = false;
             btnplusminus.Click += btnplusminus_Click;
             // 
+            // history
+            // 
+            history.FormattingEnabled = true;
+            history.Location = new Point(708, 58);
+            history.Name = "history";
+            history.Size = new Size(521, 580);
+            history.TabIndex = 23;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(20F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.GhostWhite;
-            ClientSize = new Size(707, 711);
+            ClientSize = new Size(1289, 711);
+            Controls.Add(history);
             Controls.Add(btn0);
             Controls.Add(btndot);
             Controls.Add(btnresult);
@@ -405,5 +415,6 @@
         private Button btndot;
         private Button btnresult;
         private Button btnplusminus;
+        private ListBox history;
     }
 }
