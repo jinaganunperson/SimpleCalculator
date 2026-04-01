@@ -253,5 +253,30 @@ namespace SimpleCalculator
         }
 
         private void Form1_Load(object sender, EventArgs e) { }
+
+        private void history_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void history_DoubleClick_1(object sender, EventArgs e)
+        {
+            if (history.SelectedItem == null) return;
+
+            // 선택된 줄에서 '=' 이후의 결과값만 추출
+            string selectedLine = history.SelectedItem.ToString();
+            string[] parts = selectedLine.Split('=');
+
+            if (parts.Length > 1)
+            {
+                string lastResult = parts[1].Trim();
+
+                // 현재 입력창 초기화 후 결과값 붙여넣기
+                txtresult.Text = lastResult;
+                txtinput.Text = lastResult;
+                isOpClicked = false;
+            }
+            this.ActiveControl = null;
+        }
     }
 }

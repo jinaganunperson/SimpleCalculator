@@ -349,6 +349,8 @@
             history.Name = "history";
             history.Size = new Size(521, 580);
             history.TabIndex = 23;
+            history.SelectedIndexChanged += history_SelectedIndexChanged;
+            history.DoubleClick += history_DoubleClick_1;
             // 
             // Form1
             // 
